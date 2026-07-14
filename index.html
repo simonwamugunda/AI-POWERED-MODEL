@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recycle Sort Vision Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">AI-powered recycling assistant</p>
+          <h1>Upload waste images and detect recyclable items</h1>
+          <p class="subtitle">
+            This dashboard is designed for a YOLOv8-based system that sorts recyclables from real-world waste images.
+          </p>
+        </div>
+        <div class="hero-badge">YOLOv8 • Image classification</div>
+      </header>
+
+      <section class="panel uploader-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Image upload</h2>
+            <p>Drop an image here or browse from your device.</p>
+          </div>
+          <button id="analyzeBtn" disabled>Analyze image</button>
+        </div>
+
+        <label id="dropZone" for="imageInput" class="drop-zone">
+          <input id="imageInput" type="file" accept="image/*" />
+          <div class="drop-zone-content">
+            <span class="drop-icon">📷</span>
+            <strong>Choose or drop an image</strong>
+            <span>PNG, JPG, or WEBP up to your browser limit</span>
+          </div>
+        </label>
+
+        <div class="preview-card">
+          <img id="previewImage" alt="Selected preview" />
+          <div id="statusText" class="status-text">No image selected yet.</div>
+        </div>
+      </section>
+
+      <section class="panel results-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Detection results</h2>
+            <p>Model output and recommended recycling category.</p>
+          </div>
+        </div>
+
+        <div id="resultsArea" class="results-area">
+          <div class="empty-state">
+            <h3>Ready for analysis</h3>
+            <p>Upload an image to see detected recyclable items and sorting guidance.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
