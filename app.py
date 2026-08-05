@@ -1,4 +1,12 @@
 import io
+import os
+
+print("Current directory:", os.getcwd())
+print("Files:", os.listdir("."))
+
+print("Loading model...")
+model = ("best0.pt")
+print("Model loaded successfully!")
 
 from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
