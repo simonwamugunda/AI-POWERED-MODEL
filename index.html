@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <style>@media(max-width:760px){.sidebar.mobile-open{display:flex;width:min(280px,86vw);box-shadow:12px 0 35px #0f172a33}.sidebar.mobile-open~.main-content{filter:brightness(.8)}}</style>
   </head>
   <body>
     <div class="app-layout">
@@ -23,7 +24,7 @@
         </nav>
         <div class="sidebar-bottom">
           <div class="system-check"><span></span><div><strong>Systems operational</strong><small>All services online</small></div></div>
-          <div class="profile"><div class="avatar">AM</div><div><strong>Alex Morgan</strong><small>ML Engineer</small></div><button aria-label="Open account menu">⌄</button></div>
+          <div class="profile"><div class="avatar">AM</div><div><strong>Alex Morgan</strong><small>ML Engineer</small></div><button id="profileBtn" aria-label="Open account menu">⌄</button></div>
         </div>
       </aside>
 
@@ -31,12 +32,12 @@
         <header class="topbar">
           <button class="menu-button" aria-label="Open menu">☰</button>
           <div class="breadcrumb">Model operations <span>/</span> <strong>WasteSort Vision</strong></div>
-          <div class="top-actions"><button class="icon-button" aria-label="Notifications">♧<i></i></button><button class="help-button">?</button></div>
+          <div class="top-actions"><button id="themeBtn" class="icon-button" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button><button id="notificationsBtn" class="icon-button" aria-label="Notifications">♧<i></i></button><button id="helpBtn" class="help-button" aria-label="Help">?</button></div>
         </header>
 
         <section class="model-header">
           <div><div class="eyebrow"><span></span> PRODUCTION MODEL</div><h1>WasteSort Vision <span>v2.4.0</span></h1><p>Real-time recyclable material detection and sorting intelligence.</p></div>
-          <div class="header-actions"><button class="secondary-btn" id="refreshBtn">↻ Refresh</button><button class="secondary-btn">⇩ Report</button><button class="primary-btn">↗ Deploy model</button></div>
+          <div class="header-actions"><button class="secondary-btn" id="refreshBtn">↻ Refresh</button><button class="secondary-btn" id="reportBtn">⇩ Report</button><button class="primary-btn" id="deployBtn">↗ Deploy model</button></div>
         </section>
 
         <section class="kpi-grid" aria-label="Model performance summary">
@@ -64,7 +65,7 @@
             <div id="resultsArea" class="results-area"><div class="empty-state"><span>⌁</span><div><strong>Awaiting image input</strong><p>Your detection results will appear here after analysis.</p></div></div></div>
           </article>
 
-          <article class="panel model-snapshot" id="model"><div class="panel-heading"><div><p class="section-kicker">MODEL SNAPSHOT</p><h2>Deployment details</h2></div><button class="text-button">View all</button></div>
+          <article class="panel model-snapshot" id="model"><div class="panel-heading"><div><p class="section-kicker">MODEL SNAPSHOT</p><h2>Deployment details</h2></div><button id="viewModelBtn" class="text-button">View all</button></div>
             <div class="model-status"><div class="model-orb">◈</div><div><strong>WasteSort Vision</strong><p>Object detection · YOLOv8</p></div><span class="status-badge">● Active</span></div>
             <dl class="details-list"><div><dt>Dataset</dt><dd>RecycLens 2026</dd></div><div><dt>Classes</dt><dd>7 material types</dd></div><div><dt>Training date</dt><dd>Jul 29, 2026</dd></div><div><dt>Inference time</dt><dd>42 ms <span class="good">Excellent</span></dd></div><div><dt>Last updated</dt><dd>12 min ago</dd></div></dl>
             <div class="divider"></div><div class="health-title"><span>Service health</span><strong>100% <small>uptime</small></strong></div><div class="health-bar"><i></i></div><p class="tiny-copy">API, model server, and prediction queue are healthy.</p>
@@ -73,14 +74,15 @@
 
         <section class="performance-section" id="performance"><div class="section-title"><div><p class="section-kicker">MODEL QUALITY</p><h2>Performance overview</h2></div><select aria-label="Performance period"><option>Last 30 epochs</option></select></div>
           <div class="charts-grid"><article class="panel chart-card"><div class="chart-heading"><div><h3>Accuracy trend</h3><p>Training accuracy across epochs</p></div><strong>98.3%</strong></div><div class="chart"><span class="y y1">100%</span><span class="y y2">95%</span><span class="y y3">90%</span><svg viewBox="0 0 620 180" preserveAspectRatio="none" aria-label="Accuracy rises consistently over epochs"><defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#2563eb" stop-opacity=".22"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs><path class="gridlines" d="M35 20H610M35 82H610M35 144H610"/><path d="M35 150 C75 134 79 142 112 119 S160 121 185 99 S229 99 260 80 S310 90 338 61 S390 63 420 45 S460 49 493 34 S553 40 610 18 L610 165 L35 165Z" fill="url(#area)"/><path class="chart-line" d="M35 150 C75 134 79 142 112 119 S160 121 185 99 S229 99 260 80 S310 90 338 61 S390 63 420 45 S460 49 493 34 S553 40 610 18"/></svg><div class="x-axis"><span>1</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span></div></div></article>
-          <article class="panel distribution-card"><div class="chart-heading"><div><h3>Class distribution</h3><p>Predictions by material type</p></div><button class="dots" aria-label="More options">•••</button></div><div class="bar-list"><div><span>PET</span><i><b style="width:88%"></b></i><strong>2,841</strong></div><div><span>CAN</span><i><b style="width:70%"></b></i><strong>2,284</strong></div><div><span>GLASS</span><i><b style="width:53%"></b></i><strong>1,732</strong></div><div><span>TETRA</span><i><b style="width:37%"></b></i><strong>1,196</strong></div><div><span>Other</span><i><b style="width:22%"></b></i><strong>718</strong></div></div></article></div>
+          <article class="panel distribution-card"><div class="chart-heading"><div><h3>Class distribution</h3><p>Current session · model detections only</p></div><button id="distributionBtn" class="dots" aria-label="Show prediction activity">•••</button></div><div id="classDistribution" class="bar-list"><p class="chart-empty">Run an image analysis to see detected classes.</p></div></article></div>
         </section>
 
-        <section class="panel predictions-panel" id="predictions"><div class="panel-heading"><div><p class="section-kicker">MONITORING</p><h2>Recent predictions</h2><p>Latest production inference activity.</p></div><div class="table-actions"><button class="secondary-btn">⌕ Search</button><button class="text-button">Export CSV</button></div></div><div class="table-wrap"><table><thead><tr><th>Prediction ID</th><th>Item detected</th><th>Recommendation</th><th>Confidence</th><th>Timestamp</th><th>Status</th></tr></thead><tbody id="predictionRows"><tr><td>#PRD-92841</td><td><span class="table-item pet">PET</span></td><td>Blue recycling bin</td><td><strong>99.2%</strong></td><td>Just now</td><td><span class="status-badge">● Complete</span></td></tr><tr><td>#PRD-92840</td><td><span class="table-item can">CAN</span></td><td>Can recycling</td><td><strong>97.8%</strong></td><td>2 min ago</td><td><span class="status-badge">● Complete</span></td></tr><tr><td>#PRD-92839</td><td><span class="table-item glass">GLASS</span></td><td>Glass bin</td><td><strong>96.4%</strong></td><td>4 min ago</td><td><span class="status-badge">● Complete</span></td></tr></tbody></table></div></section>
+        <section class="panel predictions-panel" id="predictions"><div class="panel-heading"><div><p class="section-kicker">MONITORING</p><h2>Recent model predictions</h2><p>Only completed results from this browser session are listed.</p></div><div class="table-actions"><button id="searchBtn" class="secondary-btn">⌕ Search</button><button id="exportBtn" class="text-button">Export CSV</button></div></div><input id="predictionSearch" class="search-input" type="search" placeholder="Search prediction or class" aria-label="Search model predictions" hidden /><div class="table-wrap"><table><thead><tr><th>Prediction ID</th><th>Item detected</th><th>Recommendation</th><th>Confidence</th><th>Timestamp</th><th>Status</th></tr></thead><tbody id="predictionRows"><tr class="no-data"><td colspan="6">No model predictions yet. Analyze an image to create the first real result.</td></tr></tbody></table></div></section>
         <footer><span><i></i> API status: Operational</span><span>Model v2.4.0</span><span>Last sync: just now</span><span>© 2026 SortIQ</span></footer>
       </main>
     </div>
     <dialog id="cameraDialog" class="camera-dialog"><div class="camera-head"><div><h2>Take a photo</h2><p>Center the waste item in the frame.</p></div><button id="closeCamera" class="icon-button" aria-label="Close camera">×</button></div><div class="camera-view"><video id="cameraVideo" autoplay playsinline></video><div class="camera-frame"></div></div><div class="camera-actions"><button id="cancelCamera" class="secondary-btn">Cancel</button><button id="captureBtn" class="primary-btn">◉ Capture photo</button></div></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="script.js"></script>
   </body>
 </html>
