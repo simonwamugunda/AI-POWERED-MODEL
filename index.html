@@ -17,8 +17,7 @@
         <p class="workspace-label">WORKSPACE</p>
         <nav class="side-nav" aria-label="Main navigation">
           <a class="active" href="#overview"><span>▦</span> Overview</a>
-          <a href="#analyze"><span>◉</span> Live inference</a>
-          <a href="#performance"><span>↗</span> Performance</a>
+<a href="#analyze"><span>◉</span> Live inference</a>
           <a href="#predictions"><span>▤</span> Predictions</a>
           <a href="#model"><span>⌘</span> Model registry</a>
         </nav>
@@ -40,14 +39,7 @@
           <div class="header-actions"><button class="secondary-btn" id="refreshBtn">↻ Refresh</button><button class="secondary-btn" id="reportBtn">⇩ Report</button><button class="primary-btn" id="deployBtn">↗ Deploy model</button></div>
         </section>
 
-        <section class="kpi-grid" aria-label="Model performance summary">
-          <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon blue">◎</span><span class="up">↗ 1.2%</span></div><p>Accuracy</p><h2>98.3<span>%</span></h2><div class="progress"><i style="width:98.3%"></i></div><small>vs. previous model</small></article>
-          <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon violet">⌁</span><span class="up">↗ 0.8%</span></div><p>Precision</p><h2>97.8<span>%</span></h2><div class="progress violet-bar"><i style="width:97.8%"></i></div><small>vs. previous model</small></article>
-          <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon green">◌</span><span class="up">↗ 1.5%</span></div><p>Recall</p><h2>96.9<span>%</span></h2><div class="progress green-bar"><i style="width:96.9%"></i></div><small>vs. previous model</small></article>
-          <article class="kpi-card"><div class="kpi-top"><span class="kpi-icon amber">✦</span><span class="up">↗ 1.0%</span></div><p>F1 score</p><h2>97.3<span>%</span></h2><div class="progress amber-bar"><i style="width:97.3%"></i></div><small>balanced performance</small></article>
-        </section>
-
-        <section class="content-grid" id="analyze">
+<section class="content-grid" id="analyze">
           <article class="panel inference-panel">
             <div class="panel-heading"><div><p class="section-kicker">REAL-TIME INFERENCE</p><h2>Analyze a waste item</h2><p>Upload an image or use your camera to get an instant sorting recommendation.</p></div><span class="live-pill"><i></i> Ready</span></div>
             <div class="input-methods">
@@ -72,13 +64,8 @@
           </article>
         </section>
 
-        <section class="performance-section" id="performance"><div class="section-title"><div><p class="section-kicker">MODEL QUALITY</p><h2>Performance overview</h2></div><select aria-label="Performance period"><option>Last 30 epochs</option></select></div>
-          <div class="charts-grid"><article class="panel chart-card"><div class="chart-heading"><div><h3>Accuracy trend</h3><p>Training accuracy across epochs</p></div><strong>98.3%</strong></div><div class="chart"><span class="y y1">100%</span><span class="y y2">95%</span><span class="y y3">90%</span><svg viewBox="0 0 620 180" preserveAspectRatio="none" aria-label="Accuracy rises consistently over epochs"><defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#2563eb" stop-opacity=".22"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs><path class="gridlines" d="M35 20H610M35 82H610M35 144H610"/><path d="M35 150 C75 134 79 142 112 119 S160 121 185 99 S229 99 260 80 S310 90 338 61 S390 63 420 45 S460 49 493 34 S553 40 610 18 L610 165 L35 165Z" fill="url(#area)"/><path class="chart-line" d="M35 150 C75 134 79 142 112 119 S160 121 185 99 S229 99 260 80 S310 90 338 61 S390 63 420 45 S460 49 493 34 S553 40 610 18"/></svg><div class="x-axis"><span>1</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span></div></div></article>
-          <article class="panel distribution-card"><div class="chart-heading"><div><h3>Class distribution</h3><p>Current session · model detections only</p></div><button id="distributionBtn" class="dots" aria-label="Show prediction activity">•••</button></div><div id="classDistribution" class="bar-list"><p class="chart-empty">Run an image analysis to see detected classes.</p></div></article></div>
-        </section>
-
-        <section class="panel predictions-panel" id="predictions"><div class="panel-heading"><div><p class="section-kicker">MONITORING</p><h2>Recent model predictions</h2><p>Only completed results from this browser session are listed.</p></div><div class="table-actions"><button id="searchBtn" class="secondary-btn">⌕ Search</button><button id="exportBtn" class="text-button">Export CSV</button></div></div><input id="predictionSearch" class="search-input" type="search" placeholder="Search prediction or class" aria-label="Search model predictions" hidden /><div class="table-wrap"><table><thead><tr><th>Prediction ID</th><th>Item detected</th><th>Recommendation</th><th>Confidence</th><th>Timestamp</th><th>Status</th></tr></thead><tbody id="predictionRows"><tr class="no-data"><td colspan="6">No model predictions yet. Analyze an image to create the first real result.</td></tr></tbody></table></div></section>
-        <footer><span><i></i> API status: Operational</span><span>Model v2.4.0</span><span>Last sync: just now</span><span>© 2026 SortIQ</span></footer>
+<section class="panel predictions-panel" id="predictions"><div class="panel-heading"><div><p class="section-kicker">MONITORING</p><h2>Recent model predictions</h2><p>Only completed results from this browser session are listed.</p></div><div class="table-actions"><button id="searchBtn" class="secondary-btn">⌕ Search</button><button id="exportBtn" class="text-button">Export CSV</button></div></div><input id="predictionSearch" class="search-input" type="search" placeholder="Search prediction or class" aria-label="Search model predictions" hidden /><div class="table-wrap"><table><thead><tr><th>Prediction ID</th><th>Item detected</th><th>Recommendation</th><th>Confidence</th><th>Timestamp</th><th>Status</th></tr></thead><tbody id="predictionRows"><tr class="no-data"><td colspan="6">No model predictions yet. Analyze an image to create the first real result.</td></tr></tbody></table></div></section>
+<footer><span><i></i> API status: Operational</span><span>Model v2.4.0</span><span>Last sync: just now</span><span>© 2026 SortIQ</span></footer>
       </main>
     </div>
     <dialog id="cameraDialog" class="camera-dialog"><div class="camera-head"><div><h2>Take a photo</h2><p>Center the waste item in the frame.</p></div><button id="closeCamera" class="icon-button" aria-label="Close camera">×</button></div><div class="camera-view"><video id="cameraVideo" autoplay playsinline></video><div class="camera-frame"></div></div><div class="camera-actions"><button id="cancelCamera" class="secondary-btn">Cancel</button><button id="captureBtn" class="primary-btn">◉ Capture photo</button></div></dialog>
