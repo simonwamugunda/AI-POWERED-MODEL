@@ -50,10 +50,11 @@
               <div class="or-divider"><span>OR</span></div>
               <button id="cameraBtn" class="camera-option"><span class="camera-icon">⌾</span><strong>Use camera</strong><small>Take a photo now</small></button>
             </div>
-            <div id="previewCard" class="preview-card" hidden>
-              <div id="imageOverlayWrap" class="image-overlay-wrap"><img id="previewImage" alt="Selected waste item preview" /><canvas id="boxesCanvas" aria-hidden="true"></canvas></div>
-              <div class="preview-info"><div><strong id="fileName">Selected image</strong><p id="statusText">Ready to analyze</p></div><button id="clearBtn" class="text-button">Remove</button><button id="analyzeBtn" class="primary-btn" disabled>Analyze image <span>→</span></button></div>
-            </div>
+            <section id="previewCard" class="detection-preview" aria-labelledby="previewTitle" hidden>
+              <div class="preview-head"><div><p class="section-kicker">DETECTION PREVIEW</p><h3 id="previewTitle">Inspect your image</h3></div><p id="statusText" class="preview-status" role="status">Ready to analyze</p></div>
+              <div id="imageOverlayWrap" class="detection-stage"><div id="imageRenderer" class="image-renderer"><img id="previewImage" alt="Selected waste item preview" /><canvas id="boxesCanvas" aria-label="Detected object bounding boxes"></canvas><div id="detectionLegend" class="detection-legend" hidden aria-live="polite"></div><div id="analysisLoading" class="analysis-loading" hidden><span></span>Analyzing image</div></div></div>
+              <div class="preview-info"><div><strong id="fileName">Selected image</strong><p id="imageMeta">Image dimensions will appear here</p></div><div class="preview-actions"><button id="clearBtn" class="icon-button remove-button" type="button" aria-label="Remove selected image" title="Remove selected image">×</button><button id="analyzeBtn" class="primary-btn" disabled>Analyze image <span>→</span></button></div></div>
+            </section>
             <div id="resultsArea" class="results-area"><div class="empty-state"><span>⌁</span><div><strong>Awaiting image input</strong><p>Your detection results will appear here after analysis.</p></div></div></div>
           </article>
 
