@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "SortIQ", "slug": "sortiq-mobile", "scheme": "sortiq",
+    "version": "1.0.0", "orientation": "portrait",
+    "android": { "package": "com.sortiq.wastesort" },
+    "ios": { "bundleIdentifier": "com.sortiq.wastesort" },
+    "plugins": [["expo-image-picker", { "photosPermission": "Allow SortIQ to access photos for waste detection.", "cameraPermission": "Allow SortIQ to use your camera to scan waste items." }]]
+  }
+}

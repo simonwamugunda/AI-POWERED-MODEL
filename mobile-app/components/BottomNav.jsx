@@ -1,0 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+const items = [['dashboard', 'Home', 'home-outline'], ['history', 'History', 'time-outline'], ['scan', 'Scan', 'scan-outline'], ['statistics', 'Stats', 'stats-chart-outline'], ['profile', 'Profile', 'person-outline']];
+export default function BottomNav({ active }) { return <View style={s.nav}>{items.map(([route, label, icon]) => <TouchableOpacity key={route} style={[s.item, route === 'scan' && s.scan]} onPress={() => router.replace(`/${route}`)}><Ionicons name={icon} size={route === 'scan' ? 26 : 21} color={route === active ? '#FFFFFF' : '#4B6352'} /><Text style={[s.text, route === active && s.active]}>{label}</Text></TouchableOpacity>)}</View>; }
+const s = StyleSheet.create({ nav:{ height:70, backgroundColor:'#FFF', flexDirection:'row', borderTopWidth:1, borderColor:'#E3ECE5', justifyContent:'space-around', alignItems:'center' }, item:{ alignItems:'center', justifyContent:'center', minWidth:55, gap:3 }, scan:{ backgroundColor:'#137A42', borderRadius:30, width:59, height:59, marginTop:-25, shadowColor:'#137A42', shadowOpacity:.27, shadowRadius:8, elevation:4 }, text:{ fontSize:10, color:'#4B6352', fontWeight:'600' }, active:{ color:'#137A42' } });
