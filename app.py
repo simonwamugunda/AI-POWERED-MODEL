@@ -17,7 +17,7 @@ app = Flask(__name__, template_folder=".", static_folder=".")
 CORS(app)
 
 # Load custom trained YOLOv8 model
-model = YOLO("7M.pt")
+model = YOLO("8M.pt")
 
 # Explicit mapping by integer class index (0 - 6)
 CATEGORY_MAP = {
