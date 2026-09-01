@@ -1,17 +1,44 @@
-const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
 const TIMEOUT_MS = 30000;
 
-export async function predictImage(asset) {
+function getEndpoint(path) {
   if (!BASE_URL) throw new Error('The detection server is not configured. Add EXPO_PUBLIC_API_BASE_URL to .env.');
+  return `${BASE_URL.replace(/\/$/, '')}${path}`;
+}
+
+async function readResponse(response) {
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = data.error || (response.status >= 500 ? 'The detection server is temporarily unavailable.' : 'The detection server rejected this request.');
+    throw new Error(message);
+  }
+  return data;
+}
+
+export async function checkApiHealth() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  try {
+    const data = await fetch(getEndpoint('/'), { signal: controller.signal }).then(readResponse);
+    return { online: true, message: data.message || 'Detection service online.' };
+  } catch (error) {
+    if (error.name === 'AbortError') return { online: false, message: 'The detection service did not respond.' };
+    if (error.message === 'Network request failed') return { online: false, message: 'Unable to reach the detection service.' };
+    return { online: false, message: error.message };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+export async function predictImage(asset) {
+  if (!asset?.uri) throw new Error('Choose an image before analyzing.');
   const body = new FormData();
   body.append('file', { uri: asset.uri, name: asset.fileName || `scan-${Date.now()}.jpg`, type: asset.mimeType || 'image/jpeg' });
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const response = await fetch(`${BASE_URL.replace(/\/$/, '')}/predict`, { method: 'POST', body, signal: controller.signal });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'The detection server could not process this image.');
-    return normalisePrediction(data);
+    const response = await fetch(getEndpoint('/predict'), { method: 'POST', body, signal: controller.signal });
+    return normalisePrediction(await readResponse(response));
   } catch (error) {
     if (error.name === 'AbortError') throw new Error('The detection server took too long. Please try again.');
     if (error.message === 'Network request failed') throw new Error('Unable to connect to the detection server. Check your internet connection and try again.');
@@ -21,6 +48,16 @@ export async function predictImage(asset) {
 
 // Adapts the actual Flask response without requiring any backend change.
 function normalisePrediction(data) {
-  const top = (data.detectedItems || []).reduce((best, item) => !best || item.confidence > best.confidence ? item : best, null);
-  return { detectedClass: top?.label || data.class || 'No item detected', confidence: top?.confidence ?? data.confidence ?? 0, recommendedBin: data.recommendedBin || data.bin || 'General waste bin', detectedItems: data.detectedItems || [], boundingBoxes: data.boundingBoxes || [], summary: data.summary || 'Prediction complete.' };
+  const detectedItems = Array.isArray(data.detectedItems) ? data.detectedItems.filter(item => item?.label) : [];
+  const boundingBoxes = Array.isArray(data.boundingBoxes) ? data.boundingBoxes : [];
+  const top = detectedItems.reduce((best, item) => !best || Number(item.confidence) > Number(best.confidence) ? item : best, null);
+  const confidence = Number(top?.confidence ?? data.confidence ?? 0);
+  return {
+    detectedClass: top?.label || data.class || 'No item detected',
+    confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(1, confidence)) : 0,
+    recommendedBin: data.recommendedBin || data.bin || 'General waste bin',
+    detectedItems,
+    boundingBoxes,
+    summary: data.summary || 'Prediction complete.',
+  };
 }
