@@ -5,7 +5,7 @@ print("Current directory:", os.getcwd())
 print("Files:", os.listdir("."))
 
 print("Loading model...")
-model = ("best121.pt")
+model = ("18M.pt")
 print("Model loaded successfully!")
 
 from flask import Flask, jsonify, render_template, request, send_from_directory
@@ -17,7 +17,7 @@ app = Flask(__name__, template_folder=".", static_folder=".")
 CORS(app)
 
 # Load custom trained YOLOv8 model
-model = YOLO("best121.pt")
+model = YOLO("18M.pt")
 
 # Explicit mapping by integer class index (0 - 6)
 CATEGORY_MAP = {

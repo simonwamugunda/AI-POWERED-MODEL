@@ -11,7 +11,13 @@ export default function Scan() {
   async function choose(source) {
     const permission = source === 'camera' ? await ImagePicker.requestCameraPermissionsAsync() : await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) return Alert.alert('Permission needed', `Allow photo ${source === 'camera' ? 'camera' : 'library'} access to scan an item.`);
-    const result = source === 'camera' ? await ImagePicker.launchCameraAsync({ mediaTypes:['images'], quality:.7, allowsEditing:true }) : await ImagePicker.launchImageLibraryAsync({ mediaTypes:['images'], quality:.7, allowsEditing:true });
+    // Android delegates `allowsEditing` to the device crop activity. On some
+    // phones that activity prompts for a system/Photos download after taking a
+    // new picture, before this app ever receives the image. Keep gallery
+    // cropping, but return a camera capture directly to the scan preview.
+    const result = source === 'camera'
+      ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 0.7, allowsEditing: false })
+      : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.7, allowsEditing: true });
     if (!result.canceled) setAsset(result.assets[0]);
   }
   async function analyze() { if (!asset || loading) return; setLoading(true); try { const prediction = await predictImage(asset); router.push({ pathname:'/result', params:{ scan: JSON.stringify({ ...prediction, imageUri: asset.uri, imageSize: { width: asset.width, height: asset.height }, analyzedAt: new Date().toISOString() }) } }); } catch(e) { Alert.alert('Prediction unavailable', e.message, [{ text: 'Try again', onPress: analyze }, { text: 'Cancel', style: 'cancel' }]); } finally { setLoading(false); } }

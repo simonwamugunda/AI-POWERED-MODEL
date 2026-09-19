@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
 const TIMEOUT_MS = 30000;
 
@@ -33,7 +35,18 @@ export async function checkApiHealth() {
 export async function predictImage(asset) {
   if (!asset?.uri) throw new Error('Choose an image before analyzing.');
   const body = new FormData();
-  body.append('file', { uri: asset.uri, name: asset.fileName || `scan-${Date.now()}.jpg`, type: asset.mimeType || 'image/jpeg' });
+  const fileName = asset.fileName || `scan-${Date.now()}.jpg`;
+
+  // Browsers require an actual Blob/File in FormData. Native Expo accepts the
+  // uri/name/type object, so retain that format for Android and iOS.
+  if (Platform.OS === 'web') {
+    const imageResponse = await fetch(asset.uri);
+    if (!imageResponse.ok) throw new Error('Could not read the selected image. Please choose it again.');
+    const imageBlob = await imageResponse.blob();
+    body.append('file', imageBlob, fileName);
+  } else {
+    body.append('file', { uri: asset.uri, name: fileName, type: asset.mimeType || 'image/jpeg' });
+  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
