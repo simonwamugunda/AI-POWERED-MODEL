@@ -6,7 +6,8 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "android:apk": "cd android && ./gradlew assembleDebug"
+    "android:apk": "cd android && ../scripts/gradle-with-java17.sh assembleDebug",
+    "android:apk:release": "cd android && ../scripts/gradle-with-java17.sh assembleRelease"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
