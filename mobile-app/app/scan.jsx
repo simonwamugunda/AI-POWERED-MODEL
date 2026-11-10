@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Linking, PermissionsAndroid, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
@@ -10,6 +10,25 @@ export default function Scan() {
   const navigation = useNavigation();
   const [asset, setAsset] = useState(null); const [loading, setLoading] = useState(false);
   async function choose(source) {
+    if (source === 'camera' && Platform.OS === 'android') {
+      const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA, {
+        title: 'Allow camera access',
+        message: 'SortIQ needs camera access to take a photo of the item you want to scan.',
+        buttonPositive: 'Allow',
+        buttonNegative: 'Not now',
+      });
+      if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
+        const blocked = permission === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN;
+        Alert.alert(
+          'Camera permission required',
+          blocked ? 'Allow camera access in Settings to take a photo.' : 'Allow camera access to take a photo.',
+          blocked
+            ? [{ text: 'Cancel', style: 'cancel' }, { text: 'Open settings', onPress: () => Linking.openSettings() }]
+            : [{ text: 'OK' }],
+        );
+        return;
+      }
+    }
     const options = { mediaType: 'photo', quality: 0.7, selectionLimit: 1, saveToPhotos: false };
     const result = source === 'camera' ? await launchCamera(options) : await launchImageLibrary(options);
     if (result.errorCode) return Alert.alert('Unable to open photos', result.errorMessage || 'Check the app permissions and try again.');
