@@ -1,2 +1,3 @@
-import { ActivityIndicator, Text, View } from 'react-native';
-export default function LoadingIndicator({ label = 'Loading…' }) { return <View style={{ alignItems: 'center', padding: 24, gap: 10 }}><ActivityIndicator color="#137A42" size="large" /><Text style={{ color: '#52665A' }}>{label}</Text></View>; }
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+export default function LoadingIndicator({ label = 'Loading…' }) { return <View style={s.wrap}><View style={s.mark}><Text style={s.leaf}>♻</Text></View><ActivityIndicator color="#147A48" size="small" /><Text style={s.label}>{label}</Text></View>; }
+const s=StyleSheet.create({wrap:{flex:1,alignItems:'center',justifyContent:'center',padding:24,gap:14,backgroundColor:'#F4F8F4'},mark:{width:64,height:64,borderRadius:22,backgroundColor:'#E3F2E7',alignItems:'center',justifyContent:'center'},leaf:{fontSize:30,color:'#147A48'},label:{color:'#53675A',fontSize:14,fontWeight:'600'}});
