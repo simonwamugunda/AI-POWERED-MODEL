@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getAuth, getReactNativePersistence, initializeAuth } from 'firebase/auth';
 
@@ -12,12 +13,12 @@ function cleanEnvValue(value) {
 }
 
 const firebaseConfig = {
-  apiKey: cleanEnvValue(process.env.EXPO_PUBLIC_FIREBASE_API_KEY),
-  authDomain: cleanEnvValue(process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN),
-  projectId: cleanEnvValue(process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID),
-  storageBucket: cleanEnvValue(process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET),
-  messagingSenderId: cleanEnvValue(process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID),
-  appId: cleanEnvValue(process.env.EXPO_PUBLIC_FIREBASE_APP_ID),
+  apiKey: cleanEnvValue(Config.FIREBASE_API_KEY),
+  authDomain: cleanEnvValue(Config.FIREBASE_AUTH_DOMAIN),
+  projectId: cleanEnvValue(Config.FIREBASE_PROJECT_ID),
+  storageBucket: cleanEnvValue(Config.FIREBASE_STORAGE_BUCKET),
+  messagingSenderId: cleanEnvValue(Config.FIREBASE_MESSAGING_SENDER_ID),
+  appId: cleanEnvValue(Config.FIREBASE_APP_ID),
 };
 
 export const firebaseIsConfigured = Object.values(firebaseConfig).every(Boolean);
@@ -26,7 +27,7 @@ let auth;
 
 export function getFirebaseAuth() {
   if (!firebaseIsConfigured) {
-    throw new Error('Firebase is not configured. Add the EXPO_PUBLIC_FIREBASE_* values to mobile-app/.env.');
+    throw new Error('Firebase is not configured. Add the FIREBASE_* values to mobile-app/.env.');
   }
 
   if (auth) return auth;

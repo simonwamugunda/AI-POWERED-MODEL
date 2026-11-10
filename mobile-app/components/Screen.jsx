@@ -1,4 +1,5 @@
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNav from './BottomNav';
 export default function Screen({ children, active, noNav = false }) {
   return <SafeAreaView style={styles.safe}><View style={styles.content}>{children}</View>{!noNav && <BottomNav active={active} />}</SafeAreaView>;

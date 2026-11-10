@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import PredictionCard from '../components/PredictionCard';
 import { deleteScan, getScans } from '../services/storage';

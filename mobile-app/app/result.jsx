@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import { saveScan } from '../services/storage';
 
@@ -38,7 +38,9 @@ function DetectionImage({ imageUri, imageSize: pickedImageSize, boxes = [] }) {
 }
 
 export default function Result() {
-  const { scan: encoded } = useLocalSearchParams();
+  const navigation = useNavigation();
+  const route = useRoute();
+  const encoded = route.params?.scan;
   let scan;
   try {
     scan = JSON.parse(encoded || '{}');
@@ -47,8 +49,8 @@ export default function Result() {
   }
   const [saved, setSaved] = useState(false);
   async function save() { if (!scan || saved) return; await saveScan(scan); setSaved(true); }
-  if (!scan?.imageUri) return <Screen noNav><View style={s.invalid}><Text style={s.invalidTitle}>Result unavailable</Text><Text style={s.guidance}>This scan result could not be opened. Start a new scan to continue.</Text><TouchableOpacity style={s.primary} onPress={() => router.replace('/scan')}><Text style={s.primaryText}>Start a new scan</Text></TouchableOpacity></View></Screen>;
-  return <Screen noNav><ScrollView contentContainerStyle={s.page}><Text style={s.eyebrow}>ANALYSIS COMPLETE</Text><Text style={s.title}>Here’s what we found</Text><DetectionImage imageUri={scan.imageUri} imageSize={scan.imageSize} boxes={scan.boundingBoxes}/><View style={s.card}><Text style={s.label}>DETECTED ITEM</Text><Text style={s.item}>{scan.detectedClass}</Text><Text style={s.confidence}>{Math.round(scan.confidence * 100)}% confidence</Text><View style={s.divider}/><Text style={s.label}>RECOMMENDED BIN</Text><Text style={s.bin}>♻ {scan.recommendedBin}</Text><Text style={s.guidance}>Empty and rinse recyclable containers before placing them in the recommended bin.</Text></View><TouchableOpacity style={s.primary} onPress={() => router.replace('/scan')}><Text style={s.primaryText}>Scan another item</Text></TouchableOpacity><TouchableOpacity style={s.secondary} disabled={saved} onPress={save}><Text style={s.secondaryText}>{saved ? 'Saved to history' : 'Save result'}</Text></TouchableOpacity></ScrollView></Screen>;
+  if (!scan?.imageUri) return <Screen noNav><View style={s.invalid}><Text style={s.invalidTitle}>Result unavailable</Text><Text style={s.guidance}>This scan result could not be opened. Start a new scan to continue.</Text><TouchableOpacity style={s.primary} onPress={() => navigation.replace('Scan')}><Text style={s.primaryText}>Start a new scan</Text></TouchableOpacity></View></Screen>;
+  return <Screen noNav><ScrollView contentContainerStyle={s.page}><Text style={s.eyebrow}>ANALYSIS COMPLETE</Text><Text style={s.title}>Here’s what we found</Text><DetectionImage imageUri={scan.imageUri} imageSize={scan.imageSize} boxes={scan.boundingBoxes}/><View style={s.card}><Text style={s.label}>DETECTED ITEM</Text><Text style={s.item}>{scan.detectedClass}</Text><Text style={s.confidence}>{Math.round(scan.confidence * 100)}% confidence</Text><View style={s.divider}/><Text style={s.label}>RECOMMENDED BIN</Text><Text style={s.bin}>♻ {scan.recommendedBin}</Text><Text style={s.guidance}>Empty and rinse recyclable containers before placing them in the recommended bin.</Text></View><TouchableOpacity style={s.primary} onPress={() => navigation.replace('Scan')}><Text style={s.primaryText}>Scan another item</Text></TouchableOpacity><TouchableOpacity style={s.secondary} disabled={saved} onPress={save}><Text style={s.secondaryText}>{saved ? 'Saved to history' : 'Save result'}</Text></TouchableOpacity></ScrollView></Screen>;
 }
 
 const s = StyleSheet.create({

@@ -1,10 +1,10 @@
-import { Platform } from 'react-native';
+import Config from 'react-native-config';
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
+const BASE_URL = Config.API_BASE_URL?.trim();
 const TIMEOUT_MS = 30000;
 
 function getEndpoint(path) {
-  if (!BASE_URL) throw new Error('The detection server is not configured. Add EXPO_PUBLIC_API_BASE_URL to .env.');
+  if (!BASE_URL) throw new Error('The detection server is not configured. Add API_BASE_URL to .env.');
   return `${BASE_URL.replace(/\/$/, '')}${path}`;
 }
 
@@ -37,16 +37,7 @@ export async function predictImage(asset) {
   const body = new FormData();
   const fileName = asset.fileName || `scan-${Date.now()}.jpg`;
 
-  // Browsers require an actual Blob/File in FormData. Native Expo accepts the
-  // uri/name/type object, so retain that format for Android and iOS.
-  if (Platform.OS === 'web') {
-    const imageResponse = await fetch(asset.uri);
-    if (!imageResponse.ok) throw new Error('Could not read the selected image. Please choose it again.');
-    const imageBlob = await imageResponse.blob();
-    body.append('file', imageBlob, fileName);
-  } else {
-    body.append('file', { uri: asset.uri, name: fileName, type: asset.mimeType || 'image/jpeg' });
-  }
+  body.append('file', { uri: asset.uri, name: fileName, type: asset.type || asset.mimeType || 'image/jpeg' });
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {

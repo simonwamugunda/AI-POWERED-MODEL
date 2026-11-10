@@ -1,20 +1,21 @@
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { router, useFocusEffect } from 'expo-router';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import StatCard from '../components/StatCard';
 import PredictionCard from '../components/PredictionCard';
 import { getScans } from '../services/storage';
 
 export default function Dashboard() {
+  const navigation = useNavigation();
   const [scans, setScans] = useState([]);
   useFocusEffect(useCallback(() => { getScans().then(setScans); }, []));
   const recyclable = scans.filter(x => x.detectedClass !== 'TRASH').length;
   return <Screen active="dashboard"><ScrollView contentContainerStyle={s.page}>
     <Text style={s.eyebrow}>SORTIQ</Text><Text style={s.title}>Make every item count.</Text><Text style={s.copy}>Identify waste correctly and make better recycling choices.</Text>
-    <TouchableOpacity style={s.scan} onPress={() => router.push('/scan')}><Text style={s.scanIcon}>⌾</Text><View><Text style={s.scanTitle}>Scan a waste item</Text><Text style={s.scanCopy}>Use camera or select a photo</Text></View><Text style={s.arrow}>›</Text></TouchableOpacity>
+    <TouchableOpacity style={s.scan} onPress={() => navigation.navigate('Scan')}><Text style={s.scanIcon}>⌾</Text><View><Text style={s.scanTitle}>Scan a waste item</Text><Text style={s.scanCopy}>Use camera or select a photo</Text></View><Text style={s.arrow}>›</Text></TouchableOpacity>
     <Text style={s.heading}>Your impact</Text><View style={s.stats}><StatCard value={scans.length} label="Total scans" /><StatCard value={recyclable} label="Recyclable" color="#1976D2" /></View>
-    <View style={s.row}><Text style={s.heading}>Recent scans</Text><TouchableOpacity onPress={() => router.push('/history')}><Text style={s.link}>See all</Text></TouchableOpacity></View>
+    <View style={s.row}><Text style={s.heading}>Recent scans</Text><TouchableOpacity onPress={() => navigation.navigate('History')}><Text style={s.link}>See all</Text></TouchableOpacity></View>
     {scans.slice(0, 3).map(scan => <PredictionCard key={scan.id} scan={scan} />)}{!scans.length && <View style={s.empty}><Text style={s.emptyIcon}>♻</Text><Text style={s.emptyTitle}>No scans yet</Text><Text style={s.emptyCopy}>Your recent recycling decisions will appear here.</Text></View>}
   </ScrollView></Screen>;
 }
